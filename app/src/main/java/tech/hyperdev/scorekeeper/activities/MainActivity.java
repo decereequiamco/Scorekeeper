@@ -12,89 +12,48 @@ import tech.hyperdev.scorekeeper.R;
 import tech.hyperdev.scorekeeper.fragments.ScoreFragment;
 
 public class MainActivity extends AppCompatActivity {
+    int theme;
 
-    Context context;
-    TextView textView2;
-    ImageButton btnPlus;
-    ImageButton btnMinus;
-    TextView tvTeamName;
-    FragmentManager team1;
-    FragmentManager team2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView2 = (TextView)findViewById(R.id.textView2);
-        btnPlus = (ImageButton)findViewById(R.id.btnPlus);
-        btnMinus = (ImageButton) findViewById(R.id.btnMinus);
-        tvTeamName = (TextView)findViewById(R.id.tvTeamName);
 
-        context=this;
-
-//            team1= getSupportFragmentManager();
-//
-//            team1.beginTransaction()
-//                 .replace(R.id.team1,ScoreFragment.newInstance(Integer.parseInt(("Team 1")),0))
-//                    .addToBackStack("team1")
-//                    .commit();
-//
-//
-//        team2= getSupportFragmentManager();
-//
-//        team2.beginTransaction()
-//                .replace(R.id.team2,ScoreFragment.newInstance(Integer.parseInt("Team 2"),0))
-//                .addToBackStack("team2")
-//                .commit();
-
-
-
-
-        btnPlus.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                String present_value_string = textView2.getText().toString();
-                int present_value_int = Integer.parseInt(present_value_string);
-                present_value_int++;
-
-                textView2.setText(String.valueOf(present_value_int));
-            }
-        });
-
-        btnMinus.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                String present_value_string = textView2.getText().toString();
-                int present_value_int = Integer.parseInt(present_value_string);
-                present_value_int--;
-                if(present_value_int<=0)
-                {
-                    btnMinus.setEnabled(false);
-                }
-                else{
-                    btnMinus.setEnabled(true);
-
-                }
-
-                textView2.setText(String.valueOf(present_value_int));
-            }
-        });
-
+        theme = R.style.DAY_MODE;
+        replaceFragments(theme);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.whiteTheme:
+                theme = R.style.DAY_MODE;
+                replaceFragments(theme);
+                break;
+            case R.id.darkTheme:
+                theme = R.style.NIGHT_MODE;
+                replaceFragments(theme);
+                break;
+        }
+        return true;
+    }
 
+    public void replaceFragments(int theme){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.containerOne, new ScoreFragment().newInstance("Team 1",theme))
+                .commit();
 
-
-    public void changeText(View num) {
-        ScoreFragment scoreFragment = (ScoreFragment) getSupportFragmentManager().findFragmentById(R.id.team1);
-        scoreFragment.plusOnclick(num);
-
-
-  }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.containerTwo, new ScoreFragment().newInstance("Team 2",theme))
+                .commit();
+    }
 }

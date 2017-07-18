@@ -1,7 +1,9 @@
 package tech.hyperdev.scorekeeper.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,73 +17,68 @@ import tech.hyperdev.scorekeeper.R;
  */
 public class ScoreFragment extends Fragment {
 
-    private static ImageButton btnPlus;
-    private static ImageButton btnMinus;
-    private static TextView textView2;
-    private static TextView tvTeamName;
-    private static int team1;
-    private static int team2;
 
-
-    int a = 0;
-
-
-
-//    public static ScoreFragment newInstance(int team1, int team2) {
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("teamName", team1);
-//        bundle.putInt("teamNum",team2);
-//
-//        ScoreFragment fragment = new ScoreFragment();
-//        fragment.setArguments(bundle);
-//
-//        return fragment;
-//    }
-//    private void readBundle(Bundle bundle) {
-//        if (bundle != null) {
-//            team1 = Integer.parseInt(bundle.getString("name"));
-//            team2 = Integer.parseInt(bundle.getString("name2"));
-//        }
-//    }
+    private String teamName;
+    private TextView tvTeamName, tvScore;
+    private ImageButton btnPlus,btnMinus;
+    private int theme;
 
 
     public ScoreFragment() {
         // Required empty public constructor
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.theme = getArguments().getInt("theme");
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), theme);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_score, container, false);
-
-        btnPlus = (ImageButton) view.findViewById(R.id.btnPlus);
-        btnMinus = (ImageButton) view.findViewById(R.id.btnMinus);
-        textView2 = (TextView) view.findViewById(R.id.textView2);
-        tvTeamName = (TextView) view.findViewById(R.id.tvTeamName);
-
-//        readBundle(getArguments());
-//        tvTeamName.setText(String.format(String.valueOf(team1+team2)));
+        View rootView = localInflater.inflate(R.layout.fragment_score,container,false);
+        this.teamName = getArguments().getString("team");
 
 
-        btnPlus.setOnClickListener(
-                new View.OnClickListener(){
-                    public void onClick(View v){
-                        plusOnclick(v);
-                    }
+        tvTeamName = (TextView) rootView.findViewById(R.id.tvTeamName);
+        btnPlus = (ImageButton) rootView.findViewById(R.id.btnPlus);
+        btnMinus = (ImageButton) rootView.findViewById(R.id.btnMinus);
+        tvScore = (TextView) rootView.findViewById(R.id.tvScore);
+
+
+        btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int score = Integer.parseInt(tvScore.getText().toString());
+                int finalScore = score + 1;
+                tvScore.setText(String.valueOf(finalScore));
+            }
+        });
+
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int score = Integer.parseInt(tvScore.getText().toString());
+                int finalScore = score - 1;
+                if(finalScore < 0){
+                    tvScore.setText(String.valueOf(0));
+                    finalScore = Integer.parseInt(tvScore.getText().toString());
                 }
-        );
+                tvScore.setText(String.valueOf(finalScore));
+            }
+        });
 
-        return view;
+        tvTeamName.setText(teamName);
+        return rootView;
     }
-    public void plusOnclick(View v){
 
+    public static ScoreFragment newInstance(String teamName, int theme) {
 
-
-        textView2.setText(""+a);
-
-
+        Bundle args = new Bundle();
+        args.putString("team", teamName);
+        args.putInt("theme",theme);
+        ScoreFragment fragment = new ScoreFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 

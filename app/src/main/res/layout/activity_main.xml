@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.hyperdev.scorekeeper.activities.MainActivity">
+    tools:context="tech.hyperdev.scorekeeper.activities.MainActivity"
+    android:orientation="vertical"
+    android:weightSum="2">
 
-    <fragment
-        android:id="@+id/team1"
-        android:name="tech.hyperdev.scorekeeper.fragments.ScoreFragment"
-        android:layout_width="350dp"
-        android:layout_height="210dp"
-        android:layout_marginTop="12dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <FrameLayout
+        android:id="@+id/containerOne"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
-    <fragment
-        android:id="@+id/team2"
-        android:name="tech.hyperdev.scorekeeper.fragments.ScoreFragment"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/team1"
-        android:layout_alignLeft="@+id/team1"
-        android:layout_alignStart="@+id/team1"
-        android:layout_marginTop="36dp" />
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/containerTwo"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import tech.hyperdev.scorekeeper.R;
 
@@ -12,6 +13,9 @@ import tech.hyperdev.scorekeeper.R;
  * A simple {@link Fragment} subclass.
  */
 public class ScoreFragment extends Fragment {
+
+    private static Button btnPlus;
+    private static Button btnMinus;
 
     public ScoreFragment() {
         // Required empty public constructor
@@ -22,6 +26,8 @@ public class ScoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_score, container, false);
+
+
     }
 
 }
